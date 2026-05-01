@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Olex | 个人介绍</title>
+    <meta name="description" content="Olex 的个人介绍网站" />
+    <style>
+      :root {
+        --bg: #f6f9fd;
+        --card: #ffffff;
+        --text: #1e2f48;
+        --muted: #516682;
+        --line: #d7e3f0;
+        --nav-bg: rgba(255, 255, 255, 0.72);
+        --active-bg: #dce9f8;
+        --active-text: #325579;
+        --shadow: 0 20px 44px -34px rgba(45, 86, 130, 0.34);
+        --accent: #6f94bf;
+      }
+
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 84px;
+      }
+
+      body {
+        font-family: "Avenir Next", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+        color: var(--text);
+        line-height: 1.65;
+        letter-spacing: 0.01em;
+        scroll-snap-type: y proximity;
+        background:
+          radial-gradient(circle at 12% 8%, rgba(170, 196, 224, 0.18), transparent 48%),
+          radial-gradient(circle at 88% 14%, rgba(196, 214, 234, 0.16), transparent 46%),
+          linear-gradient(180deg, #f7fafd 0%, #f7fafd 100%);
+      }
+
+      .site { width: min(1040px, 90vw); margin: 0 auto; }
+
+      .top-nav {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        border-bottom: 1px solid rgba(166, 188, 213, 0.25);
+        background: rgba(247, 250, 254, 0.75);
+        backdrop-filter: blur(10px);
+      }
+
+      .top-nav-inner {
+        padding: 13px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 0.8rem;
+        letter-spacing: 0.16em;
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      .hero {
+        min-height: calc(100vh - 84px);
+        display: grid;
+        align-items: center;
+        padding: 24px 0 22px;
+        scroll-snap-align: start;
+      }
+
+      .hero-box {
+        display: grid;
+        grid-template-columns: 0.95fr 1fr;
+        gap: 18px;
+        width: min(860px, 78vw);
+        margin: 0 auto;
+      }
+
+      .card {
+        background: linear-gradient(160deg, rgba(255, 255, 255, 0.96), rgba(244, 248, 252, 0.92));
+        border: 1px solid rgba(177, 198, 222, 0.34);
+        border-radius: 22px;
+        box-shadow: var(--shadow);
+      }
+
+      .photo {
+        min-height: 320px;
+        padding: 18px;
+        display: grid;
+        place-items: center;
+      }
+
+      .photo img {
+        width: min(100%, 320px);
+        max-height: 360px;
+        object-fit: cover;
+        border-radius: 18px;
+        border: 1px solid rgba(165, 187, 213, 0.36);
+      }
+
+      .photo-placeholder {
+        width: min(100%, 320px);
+        height: 320px;
+        border-radius: 18px;
+        background: linear-gradient(150deg, #edf4fc, #d9e7f5);
+        display: grid;
+        place-items: center;
+        color: #5b7da5;
+        font-size: 1rem;
+      }
+
+      .intro {
+        min-height: 320px;
+        padding: clamp(20px, 3.2vw, 30px);
+        display: grid;
+        align-content: center;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(2rem, 5vw, 3.4rem);
+        line-height: 1.08;
+        font-weight: 760;
+        letter-spacing: 0.005em;
+      }
+
+      .slogan {
+        margin: 10px 0 0;
+        color: var(--muted);
+        font-size: clamp(1rem, 2vw, 1.18rem);
+        letter-spacing: 0.015em;
+        font-weight: 520;
+      }
+
+      .content-wrap { margin-top: 140px; }
+
+      .toc {
+        position: fixed;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 198px;
+        background: var(--nav-bg);
+        border: 1px solid rgba(174, 195, 218, 0.34);
+        border-radius: 18px;
+        padding: 12px;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(8px);
+        max-height: 72vh;
+        overflow: auto;
+        z-index: 16;
+        transition: width 220ms ease, box-shadow 220ms ease;
+      }
+
+      .toc:hover {
+        width: 216px;
+        box-shadow: 0 24px 52px -34px rgba(45, 86, 130, 0.46);
+      }
+
+      .toc-link {
+        display: block;
+        text-decoration: none;
+        color: #4f6480;
+        padding: 9px 12px;
+        border-radius: 10px;
+        margin-bottom: 6px;
+        transition: background 220ms ease, color 220ms ease, transform 220ms ease;
+        font-weight: 560;
+        letter-spacing: 0.01em;
+      }
+
+      .toc-link.active {
+        background: var(--active-bg);
+        color: var(--active-text);
+        transform: translateX(2px);
+      }
+
+      .toc-link:last-child { margin-bottom: 0; }
+
+      .sections { min-width: 0; }
+
+      .section {
+        min-height: auto;
+        padding: 84px 0;
+        display: grid;
+        align-content: center;
+        scroll-margin-top: 84px;
+        scroll-snap-align: start;
+      }
+      .section-title {
+        margin: 0 0 14px;
+        font-size: 1.4rem;
+        text-align: center;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+      }
+
+      .about-card, .project {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 24px;
+        transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+      }
+
+      .about-card:hover,
+      .project:hover,
+      .skill-panel:hover,
+      .cert-item:hover {
+        transform: translateY(-2px);
+        border-color: #bdd2e8;
+        box-shadow: 0 20px 34px -30px rgba(52, 92, 138, 0.5);
+      }
+
+      .about-card,
+      .project-grid {
+        width: min(760px, 100%);
+        margin: 0 auto;
+      }
+
+      .edu-stack,
+      .exp-stack {
+        width: min(760px, 100%);
+        margin: 0 auto;
+        display: grid;
+        gap: 18px;
+      }
+
+      .sub-title {
+        margin: 0 0 6px;
+        font-size: 1.05rem;
+        color: #2f4f73;
+        font-weight: 690;
+        letter-spacing: 0.02em;
+      }
+
+      .project-feature {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 18px;
+        align-items: stretch;
+      }
+
+      .project-copy {
+        min-width: 0;
+      }
+
+      .project-art {
+        border: 1px solid #d8e3ef;
+        border-radius: 16px;
+        background: linear-gradient(160deg, #ffffff, #f5f8fc);
+        display: grid;
+        place-items: center;
+        padding: 12px;
+      }
+
+      .project-art img {
+        width: 100%;
+        height: auto;
+        max-width: 190px;
+        object-fit: contain;
+        border-radius: 10px;
+      }
+
+      .meta {
+        margin: 0 0 14px;
+        color: #5a6f8b;
+        font-size: 0.92rem;
+        letter-spacing: 0.015em;
+      }
+
+      .project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+      .edu-timeline {
+        width: min(820px, 100%);
+        margin: 0 auto;
+        display: grid;
+        gap: 18px;
+        position: relative;
+        padding-left: 34px;
+      }
+
+      .edu-timeline::before {
+        content: "";
+        position: absolute;
+        left: 12px;
+        top: 4px;
+        bottom: 4px;
+        width: 2px;
+        background: linear-gradient(180deg, #a7c2df, #d4e3f4);
+      }
+
+      .edu-item {
+        position: relative;
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+
+      .edu-item::before {
+        content: "";
+        position: absolute;
+        left: -26px;
+        top: 10px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #7fa2c8;
+        box-shadow: 0 0 0 4px #e7f0fa;
+      }
+
+      .edu-time {
+        color: #58789b;
+        font-size: 0.9rem;
+        font-weight: 600;
+        line-height: 1.5;
+        padding-top: 4px;
+      }
+
+      .edu-item .about-card {
+        background: linear-gradient(165deg, #ffffff, #f7fbff);
+      }
+
+      .skill-matrix {
+        width: min(700px, 100%);
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .skill-panel {
+        padding: 8px 0;
+        text-align: center;
+      }
+
+      .skill-line {
+        margin-top: 6px;
+        color: #4f6480;
+        font-size: 0.98rem;
+        line-height: 1.8;
+      }
+
+      .cert-grid {
+        width: min(700px, 100%);
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .cert-item {
+        padding: 8px 0;
+        color: #4f6480;
+        text-align: center;
+      }
+
+      .list { margin: 0; padding-left: 18px; color: var(--muted); }
+      .list li + li { margin-top: 14px; }
+      .muted { margin: 0; color: var(--muted); letter-spacing: 0.012em; }
+
+      .fold {
+        margin-top: 22px;
+        border-top: 1px dashed #d7e3f0;
+        padding-top: 16px;
+      }
+
+      .fold summary {
+        cursor: pointer;
+        color: #3b5f85;
+        font-weight: 600;
+        list-style: none;
+        padding: 6px 0 10px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .fold summary::-webkit-details-marker { display: none; }
+
+      .fold summary::before {
+        content: "▸";
+        transition: transform 180ms ease;
+        display: inline-block;
+      }
+
+      .fold[open] summary::before {
+        transform: rotate(90deg);
+      }
+
+      .fold ul {
+        margin-top: 12px;
+      }
+
+      .fold-body {
+        text-align: center;
+      }
+
+      .fold-body .muted {
+        max-width: 680px;
+        margin: 0 auto;
+      }
+
+      .fold-body .impact-grid {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .fold-body .mini-list,
+      .fold-body .list {
+        list-style-position: inside;
+        padding-left: 0;
+        text-align: center;
+      }
+
+      .kpi {
+        margin-top: 16px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .kpi span {
+        font-size: 0.8rem;
+        color: #48688e;
+        background: #e8f1fb;
+        border-radius: 999px;
+        padding: 4px 10px;
+      }
+
+      .impact-grid {
+        margin-top: 14px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .impact-item {
+        border: 1px solid #d7e3f0;
+        border-radius: 12px;
+        background: linear-gradient(160deg, #ffffff, #f4f9ff);
+        padding: 10px 12px;
+        min-height: 90px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+
+      .impact-item strong {
+        display: block;
+        color: #31557d;
+        font-size: 0.9rem;
+        margin-bottom: 4px;
+      }
+
+      .impact-item span {
+        color: #5d7492;
+        font-size: 0.82rem;
+      }
+
+      .mini-list {
+        margin: 14px 0 0;
+        padding-left: 18px;
+        color: var(--muted);
+      }
+
+      .mini-list li + li {
+        margin-top: 8px;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(14px);
+        transition: opacity 0.45s ease, transform 0.45s ease;
+      }
+
+      .reveal.show { opacity: 1; transform: translateY(0); }
+
+      .footer {
+        padding: 26px 0 46px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 980px) {
+        .hero-box { grid-template-columns: 1fr; }
+        .project-grid { grid-template-columns: 1fr; }
+        .photo, .intro { min-height: auto; }
+        .content-wrap {
+          margin-top: 56px;
+        }
+        .toc {
+          position: static;
+          transform: none;
+          width: 100%;
+          max-height: none;
+          overflow: auto;
+          margin-bottom: 20px;
+        }
+        .project-feature {
+          grid-template-columns: 1fr;
+        }
+        .project-art img {
+          max-width: 140px;
+        }
+        .edu-item {
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+        .edu-timeline {
+          padding-left: 26px;
+        }
+        .edu-item::before {
+          left: -20px;
+        }
+        .skill-matrix,
+        .cert-grid {
+          grid-template-columns: 1fr;
+        }
+        .impact-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top-nav">
+      <div class="site top-nav-inner">
+        <div class="logo">OLEX PROFILE</div>
+      </div>
+    </header>
+
+    <main class="site">
+      <section class="hero" id="home">
+        <div class="hero-box reveal">
+          <article class="card photo">
+            <img src="" alt="Olex 个人照" id="profile-photo" />
+            <div class="photo-placeholder" id="photo-placeholder">个人照片展示区</div>
+          </article>
+          <article class="card intro">
+            <h1>Olex</h1>
+            <p class="slogan">你所见皆是我</p>
+          </article>
+        </div>
+      </section>
+
+      <div class="content-wrap">
+        <aside class="toc" aria-label="章节导航" id="toc">
+          <a class="toc-link" href="#home" data-target="home">首页</a>
+          <a class="toc-link" href="#about" data-target="about">关于我 / 个人简介</a>
+          <a class="toc-link" href="#education" data-target="education">教育背景</a>
+          <a class="toc-link" href="#internship" data-target="internship">实习与实践经历</a>
+          <a class="toc-link" href="#projects" data-target="projects">项目经历</a>
+          <a class="toc-link" href="#skills" data-target="skills">技能标签</a>
+          <a class="toc-link" href="#certs" data-target="certs">证件与荣誉</a>
+          <a class="toc-link" href="#contact" data-target="contact">联系方式</a>
+        </aside>
+
+        <div class="sections">
+          <section class="section reveal" id="about">
+            <h2 class="section-title">关于我 / 个人简介</h2>
+            <article class="about-card">
+              <p class="muted">我专注于信息管理与组织协作场景，重视效率、秩序与落地执行。偏好通过简洁表达和清晰流程，让复杂事务更容易被理解和推进。</p>
+            </article>
+          </section>
+
+          <section class="section reveal" id="education">
+            <h2 class="section-title">教育背景</h2>
+            <div class="edu-timeline">
+              <div class="edu-item">
+                <div class="edu-time">2022.09 — 2026.06</div>
+                <article class="about-card">
+                  <h3 class="sub-title">华中师范大学｜信息管理学院</h3>
+                  <p class="meta">信息管理与信息系统｜本科</p>
+                  <p class="muted">主修方向：信息系统设计、数据分析、管理信息系统、电子商务与项目管理。</p>
+                </article>
+              </div>
+              <div class="edu-item">
+                <div class="edu-time">升学规划</div>
+                <article class="about-card">
+                  <h3 class="sub-title">计算机科学与技术 / 信息系统 / 数据分析相关方向</h3>
+                  <p class="muted">计划继续深造，重点关注计算机科学、数据挖掘、信息系统与智能决策等领域。</p>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <section class="section reveal" id="internship">
+            <h2 class="section-title">实习与实践经历</h2>
+            <div class="exp-stack">
+              <article class="about-card">
+                <h3 class="sub-title">华中师范大学信息管理学院院办公室｜行政与财务助理</h3>
+                <p class="meta">2026.01 — 2026.04</p>
+                <p class="muted">负责财务与行政协同、会议保障及制度建设，支撑学院日常办公与关键活动推进。</p>
+                <div class="impact-grid">
+                  <div class="impact-item"><strong>复试保障</strong><span>招生复试全流程支持</span></div>
+                  <div class="impact-item"><strong>流程规范</strong><span>助理须知修订与交接培训</span></div>
+                  <div class="impact-item"><strong>会务协同</strong><span>会议接待与设备调试执行</span></div>
+                </div>
+                <ul class="mini-list">
+                  <li>协助财务与行政日常事务，保障报销流转和数据核对准确推进。</li>
+                  <li>参与学院会议与校企合作会务支持，负责现场服务与流程配合。</li>
+                </ul>
+                <details class="fold">
+                  <summary>查看完整经历</summary>
+                  <div class="fold-body">
+                    <ul class="list">
+                      <li><strong>研究生招生复试保障：</strong>作为主要工作人员之一，参加2026年华中师范大学信息管理学院研究生招生复试及图情非全日制研究生招生调剂复试保障工作，负责后勤物资准备、餐食茶歇发放、文具配置、打印设备调试、场地整理与现场服务，协助保障复试流程顺利推进。</li>
+                      <li><strong>院办助理工作规范建设：</strong>负责撰写并修订《华中师范大学信息管理学院院办公室助理须知》，协助院办主任完成新助理入职培训与工作交接，推动院办助理工作流程更加清晰规范。</li>
+                      <li><strong>学院会议与校企合作接待：</strong>参与学院各类会议及校企合作会议的会务保障工作，协助完成会议物资准备、硬件设备调试、现场接待、流程配合及会后材料整理，并撰写部分会议流程说明。</li>
+                      <li><strong>行政财务与办公保障：</strong>协助院办主任及财务老师完成报销材料流转、系统数据录入核对、办公物资清算调配、会议室网站维护、后台数据清洗及设备检查等工作，保障学院财务、行政与会议空间管理事务有序开展。</li>
+                    </ul>
+                  </div>
+                </details>
+              </article>
+              <article class="about-card">
+                <h3 class="sub-title">湖北省羽毛球协会｜赛事执行 / 行政协助</h3>
+                <p class="meta">2023.06 — 2023.09；2024.07 — 2024.09</p>
+                <p class="muted">参与赛事执行与行政协助，负责现场协调、信息传达与基础保障工作。</p>
+                <div class="impact-grid">
+                  <div class="impact-item"><strong>赛事执行</strong><span>省级青少年赛事支持</span></div>
+                  <div class="impact-item"><strong>现场协调</strong><span>多地赛场沟通与对接</span></div>
+                  <div class="impact-item"><strong>后勤保障</strong><span>信息传达与服务支撑</span></div>
+                </div>
+                <ul class="mini-list">
+                  <li>连续两阶段参与协会赛事组织，承担执行与行政辅助职责。</li>
+                  <li>重点协助荆州、襄阳两地赛事现场协调与人员对接。</li>
+                </ul>
+                <details class="fold">
+                  <summary>查看完整经历</summary>
+                  <div class="fold-body">
+                    <ul class="list">
+                      <li><strong>青少年羽毛球赛事活动参与：</strong>2023 年 7 月受邀参与湖北省羽毛球青少年俱乐部赛事活动，配合完成现场交流、活动支持、人员沟通及赛事服务等相关工作。</li>
+                      <li><strong>湖北省青少年羽毛球锦标赛执行保障：</strong>2024 年 7 月随协会前往荆州，参与湖北省青少年羽毛球锦标赛执行工作，协助完成赛事期间的信息传达、现场协调、人员对接及基础后勤保障任务。</li>
+                      <li><strong>襄阳青少年锦标赛现场支持：</strong>2024 年 8 月随协会前往襄阳，参与青少年锦标赛相关工作，配合完成赛事组织、现场服务、人员沟通及后勤协调等事务。</li>
+                    </ul>
+                  </div>
+                </details>
+              </article>
+              <article class="about-card">
+                <h3 class="sub-title">华中师范大学信息管理学院｜来凤县培训班实践活动主要负责人之一</h3>
+                <p class="meta">2023.07 — 2023.08</p>
+                <p class="muted">作为主要负责人之一统筹培训班组织执行，推进地方沟通、现场管理与总结收尾。</p>
+                <div class="impact-grid">
+                  <div class="impact-item"><strong>组织执行</strong><span>培训班运营推进</span></div>
+                  <div class="impact-item"><strong>地方协调</strong><span>多方沟通联动</span></div>
+                  <div class="impact-item"><strong>总结汇报</strong><span>代表发言与材料归档</span></div>
+                </div>
+                <ul class="mini-list">
+                  <li>负责活动期间组织安排、秩序维护和关键节点推进。</li>
+                  <li>完成阶段性总结与后续资料整理，保障项目闭环。</li>
+                </ul>
+                <details class="fold">
+                  <summary>查看完整经历</summary>
+                  <div class="fold-body">
+                    <ul class="list">
+                      <li><strong>培训班组织与现场管理：</strong>参与培训班日常事务安排、人员对接、材料整理、班级管理及现场秩序维护，协助保障培训活动顺利开展。</li>
+                      <li><strong>地方沟通与事务协调：</strong>负责与当地相关负责人、工作人员及培训班参与人员进行沟通协调，推动活动安排、现场组织和日常管理工作有序进行。</li>
+                      <li><strong>学院代表发言与总结工作：</strong>代表华中师范大学信息管理学院进行发言总结，参与活动阶段性总结与后续材料整理，协助完成培训班相关收尾工作。</li>
+                    </ul>
+                  </div>
+                </details>
+              </article>
+            </div>
+          </section>
+
+          <section class="section reveal" id="projects">
+            <h2 class="section-title">项目经历</h2>
+            <div class="exp-stack">
+              <article class="about-card">
+                <div class="project-feature">
+                  <div class="project-copy">
+                    <h3 class="sub-title">Today’s Eat-基于 ChatGPT 的饮食记录与推荐 App｜独立开发</h3>
+                    <p class="muted">围绕“今天吃什么”这一高频场景，结合随机转盘、口味选择、饮食记录与 AI 对话辅助，完成 iOS 端可运行原型。</p>
+                    <div class="kpi"><span>Swift</span><span>ChatGPT API</span><span>转盘交互</span><span>UI 设计</span></div>
+                  </div>
+                  <div class="project-art">
+                    <img src="./assets/todays-eat.png" alt="Today’s Eat 图标" />
+                  </div>
+                </div>
+                <details class="fold">
+                  <summary>展开核心工作与项目亮点</summary>
+                  <ul class="list">
+                    <li><strong>产品构思与功能设计：</strong>独立完成产品构思、功能规划与使用流程设计，搭建饮食记录、转盘推荐、口味选择和 AI 对话辅助等核心功能。</li>
+                    <li><strong>Swift 移动端开发：</strong>基于 Swift 独立搭建 iOS 应用项目，完成页面结构、功能逻辑和基础交互开发，形成可运行的移动端应用原型。</li>
+                    <li><strong>转盘推荐与自定义配置：</strong>设计随机转盘推荐功能，支持模板口味与自定义口味配置，通过可视化随机选择获得饮食推荐。</li>
+                    <li><strong>ChatGPT 对话辅助选择：</strong>接入 ChatGPT 相关能力，支持用户通过自然语言描述口味偏好、天气状态或当天想法，由 AI 生成更具体的饮食建议。</li>
+                    <li><strong>饮食记录与视觉设计：</strong>设计饮食记录列表与视觉风格、图标方案，提升应用完整性与识别度。</li>
+                    <li><strong>项目亮点：</strong>完整覆盖产品构思、Swift 开发、AI 对话接入、交互设计和视觉设计流程，体现独立完成移动端应用开发与原型落地能力。</li>
+                  </ul>
+                </details>
+              </article>
+
+              <article class="about-card">
+                <div class="project-feature">
+                  <div class="project-copy">
+                    <h3 class="sub-title">SparkSport 运动健身 App 项目｜内容分析 / UI 设计负责人</h3>
+                    <p class="meta">关键词：竞品分析 / UI 原型设计 / 功能需求架构 / 用户体验设计</p>
+                    <p class="muted">围绕运动记录、身体数据、训练计划、饮食推荐与社区互动等场景，参与从竞品分析到原型整合的完整设计流程。</p>
+                    <div class="kpi"><span>竞品分析</span><span>原型设计</span><span>需求架构</span></div>
+                  </div>
+                  <div class="project-art">
+                    <img src="./assets/sparksport.png" alt="SparkSport 图标" />
+                  </div>
+                </div>
+                <details class="fold">
+                  <summary>展开核心工作与项目亮点</summary>
+                  <ul class="list">
+                    <li><strong>竞品分析与产品定位：</strong>对 Keep、悦动圈、咕咚、Nike Training Club 等产品进行功能与体验对比，归纳门槛、广告干扰、操作复杂等痛点。</li>
+                    <li><strong>功能需求架构设计：</strong>参与需求架构图设计，将痛点转化为个性化设置、运动计划、每日记录、饮食模板、营养摄入、身体数据记录和社区管理模块。</li>
+                    <li><strong>个人中心原型设计：</strong>负责个人中心板块原型图，规划用户资料、运动数据、个性化设置和账户管理的信息层级。</li>
+                    <li><strong>整体原型整合与展示：</strong>负责整体原型整合、调整与录屏展示，统一视觉风格、交互逻辑和展示流程。</li>
+                    <li><strong>项目亮点：</strong>完整覆盖竞品分析、需求转化、功能架构、UI 原型与整体展示流程，体现产品设计与团队协作统筹能力。</li>
+                  </ul>
+                </details>
+              </article>
+
+              <article class="about-card">
+                <h3 class="sub-title">电悦-校园电动车管理信息系统｜产品与服务模块负责人</h3>
+                <p class="meta">关键词：产品功能设计 / 需求场景分析 / 学生端与管理端设计</p>
+                <p class="muted">面向高校电动车管理场景，围绕充电、停车、维修、论坛交流与后台管理等需求，输出结构化信息系统方案。</p>
+                <div class="kpi"><span>功能拆解</span><span>双端设计</span><span>方案撰写</span></div>
+                <details class="fold">
+                  <summary>展开核心工作与项目亮点</summary>
+                  <ul class="list">
+                    <li><strong>产品与服务模块撰写：</strong>负责计划书第二章“产品与服务”分析与撰写，系统说明产品定位、功能结构和服务对象。</li>
+                    <li><strong>功能结构设计：</strong>梳理整体框架，将 App 划分为注册入口、学生端、管理端三类核心部分，明确角色路径与功能边界。</li>
+                    <li><strong>学生端功能规划：</strong>设计充电、查询、论坛、问题反馈四大板块，细化充电位置/维修点/充电桩查询、举报反馈和常见问题查询。</li>
+                    <li><strong>管理端功能规划：</strong>设计用户信息管理、问题反馈处理、论坛内容审核等模块，支持规则发布、内容审核与问题处理。</li>
+                    <li><strong>项目亮点：</strong>体现从真实校园场景出发进行功能拆解和服务模块设计的能力，将复杂问题转化为清晰的信息系统方案。</li>
+                  </ul>
+                </details>
+              </article>
+
+              <article class="about-card">
+                <h3 class="sub-title">剧院票务管理系统｜项目组长</h3>
+                <p class="meta">关键词：动态建模 / 系统流程图 / 数据流图 / 业务流程分析</p>
+                <p class="muted">面向剧院运营场景，围绕查询、选座、订单、演出维护、团队申请与后台管理等流程完成系统分析与建模设计。</p>
+                <div class="kpi"><span>动态建模</span><span>数据流图</span><span>项目统筹</span></div>
+                <details class="fold">
+                  <summary>展开核心工作与项目亮点</summary>
+                  <ul class="list">
+                    <li><strong>业务流程梳理与系统分析：</strong>围绕普通用户、管理员、演出团队三类角色梳理购票、订单管理、演出维护和团队申请流程。</li>
+                    <li><strong>动态建模与系统流程设计：</strong>负责整体业务流程图，并拆分设计用户端、管理员端、演出团队端流程，呈现完整业务路径。</li>
+                    <li><strong>数据流图设计：</strong>负责顶层数据流图、零层图及一层图，梳理用户、订单、演出、团队与管理操作数据流转关系。</li>
+                    <li><strong>项目统筹与成果整合：</strong>作为项目组长参与任务分配、进度推进、说明书整合与成果汇报，协助完成完整项目文档。</li>
+                    <li><strong>项目亮点：</strong>突出系统分析、动态建模、流程图设计与数据流建模能力，体现复杂业务场景结构化落地能力。</li>
+                  </ul>
+                </details>
+              </article>
+            </div>
+          </section>
+
+          <section class="section reveal" id="skills">
+            <h2 class="section-title">技能标签</h2>
+            <div class="skill-matrix">
+              <article class="skill-panel">
+                <h3 class="sub-title">编程与开发</h3>
+                <p class="skill-line">Python / Java / C / Swift</p>
+              </article>
+              <article class="skill-panel">
+                <h3 class="sub-title">办公与数据处理</h3>
+                <p class="skill-line">WPS Office / Excel / PPT / 文档排版 / 表格整理</p>
+              </article>
+              <article class="skill-panel">
+                <h3 class="sub-title">语言与表达</h3>
+                <p class="skill-line">CET-6 / 普通话二甲</p>
+              </article>
+            </div>
+          </section>
+
+          <section class="section reveal" id="certs">
+            <h2 class="section-title">证件与荣誉</h2>
+            <div class="cert-grid">
+              <div class="cert-item">南洋理工大学科技创新项目结业证书</div>
+              <div class="cert-item">华为开发者证书</div>
+              <div class="cert-item">Swift 开发者证书</div>
+              <div class="cert-item">“互联网+”大学生创新创业大赛校级银奖</div>
+              <div class="cert-item">全国计算机等级考试二级 WPS Office</div>
+              <div class="cert-item">大学英语六级 CET-6：496 分</div>
+              <div class="cert-item">普通话水平测试二级甲等</div>
+            </div>
+          </section>
+
+          <section class="section reveal" id="contact">
+            <h2 class="section-title">联系方式</h2>
+            <article class="about-card">
+              <ul class="list">
+                <li>邮箱：<a href="mailto:bubbery0207@gmail.com">bubbery0207@gmail.com</a></li>
+                <li>微信：bubbery0207</li>
+              </ul>
+            </article>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">© <span id="year"></span> Olex. All rights reserved.</footer>
+
+    <script>
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) entry.target.classList.add("show");
+          }
+        },
+        { threshold: 0.15 }
+      );
+
+      document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      const img = document.getElementById("profile-photo");
+      const holder = document.getElementById("photo-placeholder");
+      if (img.getAttribute("src")) {
+        holder.style.display = "none";
+      } else {
+        img.style.display = "none";
+      }
+
+      const sectionIds = ["home", "about", "education", "internship", "projects", "skills", "certs", "contact"];
+      const sectionEls = sectionIds.map((id) => document.getElementById(id));
+      const tocLinks = Array.from(document.querySelectorAll(".toc-link"));
+      let activeId = "";
+
+      const setActiveLink = (id) => {
+        if (activeId === id) return;
+        activeId = id;
+        tocLinks.forEach((link) => link.classList.toggle("active", link.dataset.target === id));
+      };
+
+      const sectionObserver = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+          if (visible && visible.target && visible.target.id) {
+            setActiveLink(visible.target.id);
+          }
+        },
+        {
+          threshold: [0.2, 0.35, 0.5, 0.7],
+          rootMargin: "-20% 0px -35% 0px"
+        }
+      );
+
+      sectionEls.forEach((el) => sectionObserver.observe(el));
+      tocLinks.forEach((link) => {
+        link.addEventListener("click", (event) => {
+          event.preventDefault();
+          const id = link.dataset.target;
+          const target = document.getElementById(id);
+          if (!target) return;
+          setActiveLink(id);
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+      setActiveLink("home");
+    </script>
+  </body>
+</html>
